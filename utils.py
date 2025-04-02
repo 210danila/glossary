@@ -30,7 +30,7 @@ def make_request(url: str):
     }
     user_agent = os.getenv('USER_AGENT')
     headers = {'User-Agent': user_agent}
-    if os.getenv('USE_PROXY'):
+    if os.getenv('USE_PROXY') != "False":
         return requests.get(url, allow_redirects=True, headers=headers, proxies=proxies)
     else:
         return requests.get(url, allow_redirects=True, headers=headers)

@@ -1,4 +1,5 @@
 import os
+import nltk
 from dotenv import load_dotenv
 from pynput import keyboard
 from playsound import playsound
@@ -53,7 +54,7 @@ def show_word_data(mode: str):
     notify_msg = create_notification(blocks, mode)
     send_notification(lemma, notify_msg)
     print(word_data)
-    mp3_file = word_data['us_url']
+    mp3_file = word_data[os.getenv('pronunciation') + '_url']
     playsound(mp3_file)
     print("Горячая клавиша нажата!")
 
@@ -70,6 +71,7 @@ def show_entities_containing_word():
 
 if __name__ == "__main__":
     load_dotenv()
+    # nltk.download('wordnet')
     try:
         with keyboard.GlobalHotKeys({
             os.getenv('DEFINITIONS_HOTKEY'): lambda: show_word_data('definitions'),
@@ -78,6 +80,6 @@ if __name__ == "__main__":
         }) as hotkey:
             hotkey.join()
     except BaseException as e:
-        f = open('storage/log')
+        f = open('storage/app.log')
         f.write(e)
         f.close()
